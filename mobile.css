@@ -1,0 +1,99 @@
+/* Ajustes gerais do corpo para telas até 768px */
+body {
+  /* Reduz o espaçamento lateral para aproveitar melhor a tela do celular */
+  padding: 20px 12px;
+}
+
+/* Reduz o tamanho do título no mobile */
+.app-title {
+  /* Fonte menor para não quebrar em muitas linhas */
+  font-size: 1.5rem;
+}
+
+/* Reduz o subtítulo no mobile */
+.app-subtitle {
+  /* Tamanho mais compacto */
+  font-size: 0.9rem;
+}
+
+/* Ajusta o espaçamento interno do painel de upload */
+.upload-section {
+  /* Padding menor em telas pequenas */
+  padding: 16px;
+}
+
+/* Empilha os dois cartões de upload um abaixo do outro */
+.upload-grid {
+  /* Muda de 2 colunas para 1 coluna */
+  grid-template-columns: 1fr;
+  /* Reduz o espaço entre os cartões */
+  gap: 14px;
+}
+
+/* Reduz o padding interno dos cards de upload */
+.upload-card {
+  /* Mais compacto verticalmente */
+  padding: 20px 14px;
+}
+
+/* Empilha os botões Comparar e Limpar ocupando a largura total */
+.action-bar {
+  /* Muda para coluna */
+  flex-direction: column;
+}
+
+/* Botões principais ocupam 100% da largura no celular */
+.btn-primary,
+.btn-secondary {
+  /* Facilita o toque com o polegar */
+  width: 100%;
+}
+
+/* Empilha os cards de resumo em uma única coluna */
+.summary-section {
+  /* Muda de 3 colunas para 1 coluna */
+  grid-template-columns: 1fr;
+  /* Espaçamento menor */
+  gap: 12px;
+}
+
+/* Ajusta a barra de ferramentas da tabela para empilhar */
+.results-toolbar {
+  /* Coloca filtros em cima e botão de exportar embaixo */
+  flex-direction: column;
+  /* Estica os elementos na largura total */
+  align-items: stretch;
+}
+
+/* Faz os botões de filtro dividirem a largura igualmente */
+.filter-group {
+  /* Ocupa toda a largura */
+  width: 100%;
+}
+
+/* Cada botão de filtro cresce igualmente */
+.filter-btn {
+  /* Divide o espaço 50% / 50% */
+  flex: 1;
+}
+
+/* Botão de exportar ocupa a largura total */
+.btn-export {
+  /* Alinha o texto ao centro */
+  text-align: center;
+  /* Ocupa 100% da largura */
+  width: 100%;
+}
+
+/* Ajusta o tamanho da fonte da tabela no mobile */
+.results-table {
+  /* Fonte levemente menor para caber mais colunas visíveis */
+  font-size: 0.82rem;
+}
+
+/* Reduz o padding das células da tabela */
+.results-table th,
+.results-table td {
+  /* Espaçamento mais enxuto */
+  padding: 10px 8px;
+}

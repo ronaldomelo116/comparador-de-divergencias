@@ -1,0 +1,562 @@
+/* Variáveis globais de cores e espaçamentos do tema escuro */
+:root {
+  /* Cor de fundo principal da página */
+  --bg-main: #0b0f14;
+  /* Cor de fundo dos cartões e painéis */
+  --bg-surface: #141a22;
+  /* Cor de fundo para hover e cabeçalhos de tabela */
+  --bg-elevated: #1c2430;
+  /* Cor padrão das bordas */
+  --border-color: #2a3444;
+  /* Cor principal do texto */
+  --text-primary: #f0f4f8;
+  /* Cor secundária para legendas e instruções */
+  --text-muted: #94a3b8;
+  /* Cor de destaque principal (botões e foco) */
+  --accent-orange: #f37021;
+  /* Cor de destaque laranja ao passar o mouse */
+  --accent-orange-hover: #d95d14;
+  /* Cor de sucesso e itens iguais */
+  --status-match: #00ff00;
+  /* Fundo translúcido para badges de itens iguais */
+  --status-match-bg: rgba(0, 255, 0, 0.1);
+  /* Cor de alerta para itens divergentes */
+  --status-diff: #ff4d4f;
+  /* Fundo translúcido para badges de itens divergentes */
+  --status-diff-bg: rgba(255, 77, 79, 0.14);
+  /* Raio padrão de arredondamento dos cantos */
+  --radius-md: 10px;
+}
+
+/* Reset básico para padronizar margens e cálculo de largura */
+* {
+  /* Remove margens externas padrão do navegador */
+  margin: 0;
+  /* Remove espaçamentos internos padrão do navegador */
+  padding: 0;
+  /* Faz padding e borda contarem dentro da largura total */
+  box-sizing: border-box;
+}
+
+/* Estilos globais do corpo da página */
+body {
+  /* Define fonte limpa e legível para tabelas de dados */
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Aplica o fundo escuro principal */
+  background-color: var(--bg-main);
+  /* Aplica a cor clara principal do texto */
+  color: var(--text-primary);
+  /* Define altura mínima ocupando toda a tela */
+  min-height: 100vh;
+  /* Melhora a leitura de textos em várias linhas */
+  line-height: 1.5;
+  /* Espaçamento interno nas bordas da tela */
+  padding: 32px 20px;
+}
+
+/* Cabeçalho principal */
+.app-header {
+  /* Centraliza o bloco do cabeçalho */
+  max-width: 1120px;
+  /* Margem automática nas laterais e espaço abaixo */
+  margin: 0 auto 32px auto;
+  /* Alinha o texto ao centro */
+  text-align: center;
+}
+
+/* Título principal da aplicação */
+.app-title {
+  /* Tamanho destacado para o título */
+  font-size: 2rem;
+  /* Peso forte para hierarquia visual */
+  font-weight: 700;
+  /* Pequeno espaçamento abaixo do título */
+  margin-bottom: 8px;
+  /* Leve ajuste no espaçamento entre letras */
+  letter-spacing: -0.02em;
+}
+
+/* Subtítulo explicativo */
+.app-subtitle {
+  /* Cor mais suave para não competir com o título */
+  color: var(--text-muted);
+  /* Tamanho confortável para leitura */
+  font-size: 1rem;
+}
+
+/* Container central que limita a largura do conteúdo */
+.main-container {
+  /* Largura máxima confortável para desktop */
+  max-width: 1120px;
+  /* Centraliza horizontalmente */
+  margin: 0 auto;
+  /* Organiza as seções em coluna */
+  display: flex;
+  /* Empilha as seções verticalmente */
+  flex-direction: column;
+  /* Espaçamento uniforme entre seções */
+  gap: 28px;
+}
+
+/* Seção de envio dos arquivos */
+.upload-section {
+  /* Fundo de superfície para destacar o bloco */
+  background-color: var(--bg-surface);
+  /* Borda sutil ao redor do painel */
+  border: 1px solid var(--border-color);
+  /* Cantos arredondados */
+  border-radius: var(--radius-md);
+  /* Espaçamento interno do painel */
+  padding: 24px;
+}
+
+/* Grade que coloca os dois cards de upload lado a lado */
+.upload-grid {
+  /* Ativa o layout em grade */
+  display: grid;
+  /* Cria duas colunas iguais no desktop */
+  grid-template-columns: repeat(2, 1fr);
+  /* Espaço entre os dois cartões */
+  gap: 20px;
+  /* Espaço abaixo da grade antes dos botões */
+  margin-bottom: 20px;
+}
+
+/* Cartão clicável de upload (elemento label) */
+.upload-card {
+  /* Organiza os textos internos em coluna */
+  display: flex;
+  /* Empilha título, dica e nome do arquivo */
+  flex-direction: column;
+  /* Centraliza horizontalmente */
+  align-items: center;
+  /* Centraliza verticalmente */
+  justify-content: center;
+  /* Alinha o texto no centro */
+  text-align: center;
+  /* Espaço entre os textos internos */
+  gap: 8px;
+  /* Espaçamento interno generoso */
+  padding: 28px 20px;
+  /* Fundo levemente mais claro que a página */
+  background-color: var(--bg-elevated);
+  /* Borda tracejada indicando área de envio */
+  border: 2px dashed var(--border-color);
+  /* Cantos arredondados */
+  border-radius: var(--radius-md);
+  /* Cursor de mãozinha indicando clique */
+  cursor: pointer;
+  /* Transição suave para borda e cor de fundo */
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  /* Necessário para posicionar o input oculto sem quebrar o layout */
+  position: relative;
+}
+
+/* Destaque ao passar o mouse ou focar via teclado no cartão */
+.upload-card:hover,
+.upload-card:focus-within {
+  /* Borda muda para laranja vibrante */
+  border-color: var(--accent-orange);
+  /* Fundo escurece levemente para dar contraste */
+  background-color: #212b3a;
+}
+
+/* Classe opcional que o JS pode aplicar quando o arquivo for carregado */
+.upload-card.has-file {
+  /* Borda sólida verde indicando arquivo pronto */
+  border-style: solid;
+  /* Cor verde neon para confirmar o carregamento */
+  border-color: var(--status-match);
+}
+
+/* Título dentro do cartão de upload */
+.upload-card-title {
+  /* Tamanho destacado */
+  font-size: 1.1rem;
+  /* Texto em negrito */
+  font-weight: 600;
+  /* Cor clara principal */
+  color: var(--text-primary);
+}
+
+/* Texto de instrução dos formatos aceitos */
+.upload-card-hint {
+  /* Fonte menor para informação auxiliar */
+  font-size: 0.85rem;
+  /* Cor secundária */
+  color: var(--text-muted);
+}
+
+/* Exibição do nome do arquivo selecionado */
+.upload-file-name {
+  /* Espaço acima do nome do arquivo */
+  margin-top: 6px;
+  /* Tamanho compacto */
+  font-size: 0.85rem;
+  /* Cor laranja para destacar o status atual */
+  color: var(--accent-orange);
+  /* Quebra nomes de arquivos muito longos sem estourar o card */
+  word-break: break-word;
+}
+
+/* Oculta o input nativo visualmente mantendo acessibilidade por teclado */
+.file-input-hidden {
+  /* Retira do fluxo visual sem usar display none */
+  position: absolute;
+  /* Largura mínima de 1 pixel */
+  width: 1px;
+  /* Altura mínima de 1 pixel */
+  height: 1px;
+  /* Remove margens internas */
+  padding: 0;
+  /* Margem negativa para não ocupar espaço */
+  margin: -1px;
+  /* Esconde qualquer conteúdo excedente */
+  overflow: hidden;
+  /* Recorta a área visível para zero */
+  clip: rect(0, 0, 0, 0);
+  /* Impede quebra de linha */
+  white-space: nowrap;
+  /* Remove bordas */
+  border: 0;
+}
+
+/* Mensagem de erro ou alerta de validação */
+.status-message {
+  /* Espaço abaixo da mensagem */
+  margin-bottom: 16px;
+  /* Espaçamento interno */
+  padding: 12px 16px;
+  /* Fundo translúcido vermelho */
+  background-color: var(--status-diff-bg);
+  /* Borda vermelha de alerta */
+  border: 1px solid var(--status-diff);
+  /* Cantos arredondados */
+  border-radius: 8px;
+  /* Cor do texto em vermelho claro */
+  color: #ffb3b4;
+  /* Tamanho legível */
+  font-size: 0.9rem;
+}
+
+/* Barra com os botões Comparar e Limpar */
+.action-bar {
+  /* Alinha os botões lado a lado */
+  display: flex;
+  /* Centraliza os botões na horizontal */
+  justify-content: center;
+  /* Espaço entre os botões */
+  gap: 12px;
+}
+
+/* Botão principal (Comparar Arquivos) */
+.btn-primary {
+  /* Fundo laranja vibrante */
+  background-color: var(--accent-orange);
+  /* Texto branco para alto contraste */
+  color: #ffffff;
+  /* Remove borda padrão */
+  border: none;
+  /* Espaçamento interno confortável */
+  padding: 12px 28px;
+  /* Cantos arredondados */
+  border-radius: 8px;
+  /* Tamanho da fonte */
+  font-size: 0.95rem;
+  /* Negrito para chamada de ação */
+  font-weight: 600;
+  /* Cursor clicável */
+  cursor: pointer;
+  /* Transição suave no hover */
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+/* Hover do botão principal quando estiver ativo */
+.btn-primary:hover:not(:disabled) {
+  /* Escurece levemente o laranja */
+  background-color: var(--accent-orange-hover);
+}
+
+/* Estado desabilitado do botão principal */
+.btn-primary:disabled {
+  /* Reduz opacidade para sinalizar bloqueio */
+  opacity: 0.45;
+  /* Cursor indicando ação indisponível */
+  cursor: not-allowed;
+}
+
+/* Botão secundário (Limpar) */
+.btn-secondary {
+  /* Fundo transparente */
+  background-color: transparent;
+  /* Cor clara para o texto */
+  color: var(--text-primary);
+  /* Borda discreta */
+  border: 1px solid var(--border-color);
+  /* Espaçamento interno */
+  padding: 12px 22px;
+  /* Cantos arredondados */
+  border-radius: 8px;
+  /* Tamanho da fonte */
+  font-size: 0.95rem;
+  /* Peso médio */
+  font-weight: 500;
+  /* Cursor clicável */
+  cursor: pointer;
+  /* Transição suave */
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Hover do botão secundário */
+.btn-secondary:hover {
+  /* Fundo levemente elevado */
+  background-color: var(--bg-elevated);
+  /* Borda mais clara */
+  border-color: var(--text-muted);
+}
+
+/* Seção dos cards de resumo numérico */
+.summary-section {
+  /* Grade com 3 colunas iguais */
+  display: grid;
+  /* Três cards lado a lado no desktop */
+  grid-template-columns: repeat(3, 1fr);
+  /* Espaço entre os cards */
+  gap: 16px;
+}
+
+/* Estilo base de cada card de resumo */
+.summary-card {
+  /* Fundo de superfície */
+  background-color: var(--bg-surface);
+  /* Borda padrão */
+  border: 1px solid var(--border-color);
+  /* Cantos arredondados */
+  border-radius: var(--radius-md);
+  /* Espaçamento interno */
+  padding: 20px;
+  /* Organiza rótulo e valor em coluna */
+  display: flex;
+  /* Empilha verticalmente */
+  flex-direction: column;
+  /* Espaço entre rótulo e número */
+  gap: 6px;
+}
+
+/* Borda lateral verde para o card de itens iguais */
+.summary-card-match {
+  /* Destaque na borda esquerda */
+  border-left: 4px solid var(--status-match);
+}
+
+/* Borda lateral vermelha para o card de divergentes */
+.summary-card-diff {
+  /* Destaque na borda esquerda */
+  border-left: 4px solid var(--status-diff);
+}
+
+/* Rótulo do card de resumo */
+.summary-label {
+  /* Tamanho compacto */
+  font-size: 0.85rem;
+  /* Cor secundária */
+  color: var(--text-muted);
+  /* Texto em maiúsculas */
+  text-transform: uppercase;
+  /* Espaçamento leve entre letras */
+  letter-spacing: 0.04em;
+}
+
+/* Número principal do card de resumo */
+.summary-value {
+  /* Número grande para leitura rápida */
+  font-size: 1.9rem;
+  /* Peso forte */
+  font-weight: 700;
+}
+
+/* Seção da tabela de resultados */
+.results-section {
+  /* Fundo de superfície */
+  background-color: var(--bg-surface);
+  /* Borda sutil */
+  border: 1px solid var(--border-color);
+  /* Cantos arredondados */
+  border-radius: var(--radius-md);
+  /* Espaçamento interno */
+  padding: 20px;
+}
+
+/* Barra superior com filtros e botão de exportar */
+.results-toolbar {
+  /* Alinha filtros à esquerda e exportação à direita */
+  display: flex;
+  /* Distribui os blocos nas extremidades */
+  justify-content: space-between;
+  /* Centraliza verticalmente */
+  align-items: center;
+  /* Espaço caso quebre linha */
+  gap: 12px;
+  /* Espaço abaixo da barra */
+  margin-bottom: 16px;
+}
+
+/* Agrupador dos botões de filtro */
+.filter-group {
+  /* Coloca os botões lado a lado */
+  display: flex;
+  /* Espaço entre os botões */
+  gap: 8px;
+}
+
+/* Botão de filtro padrão */
+.filter-btn {
+  /* Fundo elevado */
+  background-color: var(--bg-elevated);
+  /* Texto secundário */
+  color: var(--text-muted);
+  /* Borda padrão */
+  border: 1px solid var(--border-color);
+  /* Espaçamento interno */
+  padding: 8px 16px;
+  /* Cantos arredondados */
+  border-radius: 6px;
+  /* Tamanho da fonte */
+  font-size: 0.88rem;
+  /* Peso médio */
+  font-weight: 500;
+  /* Cursor clicável */
+  cursor: pointer;
+  /* Transição suave */
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Estado ativo do botão de filtro */
+.filter-btn.is-active {
+  /* Fundo laranja para indicar filtro selecionado */
+  background-color: var(--accent-orange);
+  /* Texto branco */
+  color: #ffffff;
+  /* Borda combinando com o fundo */
+  border-color: var(--accent-orange);
+}
+
+/* Botão de exportar CSV */
+.btn-export {
+  /* Fundo escuro elevado */
+  background-color: var(--bg-elevated);
+  /* Texto verde neon para ação de download */
+  color: var(--status-match);
+  /* Borda verde */
+  border: 1px solid var(--status-match);
+  /* Espaçamento interno */
+  padding: 8px 16px;
+  /* Cantos arredondados */
+  border-radius: 6px;
+  /* Tamanho da fonte */
+  font-size: 0.88rem;
+  /* Negrito */
+  font-weight: 600;
+  /* Cursor clicável */
+  cursor: pointer;
+  /* Transição suave */
+  transition: background-color 0.2s ease;
+}
+
+/* Hover do botão de exportar */
+.btn-export:hover {
+  /* Fundo verde translúcido */
+  background-color: var(--status-match-bg);
+}
+
+/* Wrapper que permite rolagem horizontal na tabela */
+.table-wrapper {
+  /* Ativa scroll horizontal quando necessário */
+  overflow-x: auto;
+  /* Arredonda as bordas internas */
+  border-radius: 8px;
+  /* Borda ao redor da tabela */
+  border: 1px solid var(--border-color);
+}
+
+/* Tabela de resultados */
+.results-table {
+  /* Ocupa 100% da largura disponível */
+  width: 100%;
+  /* Une as bordas das células */
+  border-collapse: collapse;
+  /* Tamanho legível para dados numéricos */
+  font-size: 0.9rem;
+}
+
+/* Células do cabeçalho da tabela */
+.results-table th {
+  /* Fundo elevado para diferenciar o cabeçalho */
+  background-color: var(--bg-elevated);
+  /* Texto secundário */
+  color: var(--text-muted);
+  /* Alinhamento à esquerda */
+  text-align: left;
+  /* Espaçamento interno */
+  padding: 12px 14px;
+  /* Peso forte */
+  font-weight: 600;
+  /* Impede quebra indesejada nos títulos */
+  white-space: nowrap;
+  /* Linha divisória abaixo do cabeçalho */
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Células de dados da tabela */
+.results-table td {
+  /* Espaçamento interno */
+  padding: 12px 14px;
+  /* Linha divisória sutil entre linhas */
+  border-bottom: 1px solid var(--border-color);
+  /* Alinhamento vertical centralizado */
+  vertical-align: middle;
+}
+
+/* Destaque suave ao passar o mouse sobre uma linha */
+.results-table tbody tr:hover {
+  /* Fundo levemente mais claro */
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Badges de situação que o JS vai aplicar na coluna Situação */
+.status-badge {
+  /* Exibe em linha com controle de padding */
+  display: inline-block;
+  /* Espaçamento interno compacto */
+  padding: 4px 10px;
+  /* Formato de pílula */
+  border-radius: 999px;
+  /* Fonte menor */
+  font-size: 0.8rem;
+  /* Negrito */
+  font-weight: 600;
+  /* Impede quebra de linha */
+  white-space: nowrap;
+}
+
+/* Badge para saldo igual */
+.status-badge-match {
+  /* Fundo verde translúcido */
+  background-color: var(--status-match-bg);
+  /* Texto verde neon */
+  color: var(--status-match);
+}
+
+/* Badge para saldo divergente */
+.status-badge-diff {
+  /* Fundo vermelho translúcido */
+  background-color: var(--status-diff-bg);
+  /* Texto vermelho claro */
+  color: var(--status-diff);
+}
+
+/* Classe utilitária para ocultar elementos (colocada no final para vencer sem !important) */
+.is-hidden {
+  /* Remove o elemento da exibição */
+  display: none;
+}

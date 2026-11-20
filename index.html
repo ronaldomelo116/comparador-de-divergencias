@@ -1,0 +1,152 @@
+<!-- Define o documento como HTML5 -->
+<!DOCTYPE html>
+<!-- Define o idioma principal do conteúdo como Português do Brasil -->
+<html lang="pt-BR">
+<head>
+  <!-- Define a codificação de caracteres para suportar acentos e símbolos -->
+  <meta charset="UTF-8">
+  <!-- Garante que o layout se adapte corretamente a celulares e tablets -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Título exibido na aba do navegador -->
+  <title>Comparador de Estoque — SAP vs Revan</title>
+
+  <!-- Folha de estilos principal (desktop e base) -->
+  <link rel="stylesheet" href="style.css">
+  <!-- Folha de estilos dedicada para telas menores (mobile) -->
+  <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)">
+
+  <!-- Biblioteca SheetJS para leitura de arquivos .xlsm e .csv no navegador -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
+  <!-- Biblioteca PDF.js da Mozilla para leitura de arquivos .pdf no navegador -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+  <!-- Script principal da aplicação (carregado após a leitura do HTML) -->
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <!-- Cabeçalho principal da aplicação -->
+  <header class="app-header">
+    <!-- Título principal da página -->
+    <h1 class="app-title">Comparador de Divergências</h1>
+    <!-- Subtítulo explicando a função do sistema -->
+    <p class="app-subtitle">Compare saldos de materiais entre a base do SAP e a base da Revan</p>
+  </header>
+
+  <!-- Conteúdo principal da página -->
+  <main class="main-container">
+    <!-- Seção 1: Área de upload dos dois arquivos -->
+    <section class="upload-section" aria-label="Envio de arquivos">
+      <!-- Container em grade para alinhar os dois cartões lado a lado -->
+      <div class="upload-grid">
+        <!-- Cartão clicável vinculado ao input do arquivo SAP -->
+        <label for="sap-file-input" class="upload-card" id="sap-upload-card">
+          <!-- Título do cartão do SAP -->
+          <span class="upload-card-title">Adicione o arquivo do SAP</span>
+          <!-- Formatos aceitos exibidos como instrução -->
+         <span class="upload-card-hint">Formatos aceitos: .xlsx, .csv ou .pdf</span>
+          <!-- Nome do arquivo selecionado (atualizado via textContent no JS) -->
+          <span class="upload-file-name" id="sap-file-name">Nenhum arquivo selecionado</span>
+          <!-- Input real de arquivo (oculto visualmente via CSS) -->
+          <input
+  type="file"
+  id="sap-file-input"
+  class="file-input-hidden"
+  accept=".xlsx,.csv,.pdf"
+>
+        </label>
+
+        <!-- Cartão clicável vinculado ao input do arquivo Revan -->
+        <label for="revan-file-input" class="upload-card" id="revan-upload-card">
+          <!-- Título do cartão da Revan -->
+          <span class="upload-card-title">Adicione o arquivo da Revan</span>
+          <span class="upload-card-hint">Formatos aceitos: .xlsx, .csv ou .pdf</span>
+          <!-- Nome do arquivo selecionado (atualizado via textContent no JS) -->
+          <span class="upload-file-name" id="revan-file-name">Nenhum arquivo selecionado</span>
+          <!-- Input real de arquivo (oculto visualmente via CSS) -->
+          <input
+  type="file"
+  id="revan-file-input"
+  class="file-input-hidden"
+  accept=".xlsx,.csv,.pdf"
+>
+        </label>
+      </div>
+
+      <!-- Área de mensagens de erro ou aviso de validação -->
+      <p class="status-message is-hidden" id="status-message" role="alert"></p>
+
+      <!-- Container dos botões de ação -->
+      <div class="action-bar">
+        <!-- Botão principal (nasce desabilitado até os dois arquivos serem válidos) -->
+        <button type="button" id="compare-btn" class="btn-primary" disabled>
+          Comparar Arquivos
+        </button>
+        <!-- Botão para limpar os arquivos e reiniciar a análise -->
+        <button type="button" id="reset-btn" class="btn-secondary">
+          Limpar
+        </button>
+      </div>
+    </section>
+
+    <!-- Seção 2: Cards de resumo numérico (nasce oculta até a comparação rodar) -->
+    <section class="summary-section is-hidden" id="summary-section" aria-label="Resumo da comparação">
+      <!-- Card: Total de códigos únicos analisados -->
+      <div class="summary-card">
+        <span class="summary-label">Total de Itens</span>
+        <strong class="summary-value" id="total-items-count">0</strong>
+      </div>
+      <!-- Card: Itens com saldo idêntico -->
+      <div class="summary-card summary-card-match">
+        <span class="summary-label">Iguais</span>
+        <strong class="summary-value" id="match-items-count">0</strong>
+      </div>
+      <!-- Card: Itens com divergência de quantidade ou ausentes em uma das bases -->
+      <div class="summary-card summary-card-diff">
+        <span class="summary-label">Divergentes</span>
+        <strong class="summary-value" id="diff-items-count">0</strong>
+      </div>
+    </section>
+
+    <!-- Seção 3: Tabela de resultados e filtros (nasce oculta até a comparação rodar) -->
+    <section class="results-section is-hidden" id="results-section" aria-label="Tabela de resultados">
+      <!-- Barra de controles acima da tabela -->
+      <div class="results-toolbar">
+        <!-- Grupo de filtros para alternar a visualização -->
+        <div class="filter-group">
+          <button type="button" class="filter-btn is-active" id="filter-all-btn" data-filter="all">
+            Todos
+          </button>
+          <button type="button" class="filter-btn" id="filter-diff-btn" data-filter="diff">
+            Apenas Divergentes
+          </button>
+        </div>
+
+        <!-- Botão para exportar o resultado da análise -->
+        <button type="button" class="btn-export" id="export-csv-btn">
+          Exportar Divergências (.csv)
+        </button>
+      </div>
+
+      <!-- Wrapper para permitir rolagem horizontal da tabela em telas pequenas -->
+      <div class="table-wrapper">
+        <!-- Tabela principal de comparação -->
+        <table class="results-table">
+          <!-- Cabeçalho fixo baseado nas colunas da sua planilha -->
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Descrição</th>
+              <th>Centro</th>
+              <th>Qtd. SAP</th>
+              <th>Qtd. Revan</th>
+              <th>Diferença</th>
+              <th>Situação</th>
+            </tr>
+          </thead>
+          <!-- Corpo da tabela preenchido dinamicamente pelo script.js -->
+          <tbody id="results-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
